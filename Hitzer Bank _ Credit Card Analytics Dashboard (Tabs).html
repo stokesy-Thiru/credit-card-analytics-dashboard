@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<!-- saved from url=(0039)file:///C:/Windows/Temp/creditcard.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Hitzer Bank | Credit Card Analytics Dashboard (Tabs)</title>
+    <!-- Chart.js CDN -->
+    <script src="./Hitzer Bank _ Credit Card Analytics Dashboard (Tabs)_files/chart.umd.min.js.download"></script>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="./Hitzer Bank _ Credit Card Analytics Dashboard (Tabs)_files/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #eef2f5;
+            font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
+            padding: 24px 28px;
+            color: #1e2f3f;
+        }
+
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header & Bank title */
+        .header-title {
+            margin-bottom: 20px;
+        }
+        .header-title h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0f2b3d, #1f6392);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+        .header-title p {
+            color: #4a627a;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Tabs navigation */
+        .tabs-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: white;
+            border-radius: 60px;
+            padding: 8px 16px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid #e2e9f0;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #2c4e6e;
+            font-family: inherit;
+        }
+        .tab-btn i {
+            margin-right: 8px;
+        }
+        .tab-btn.active {
+            background: #1a5d8c;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,80,120,0.2);
+        }
+        .tab-btn:hover:not(.active) {
+            background: #e9f0f5;
+        }
+
+        /* Tab content panels */
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+        .tab-pane.active-pane {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* Cards & layout */
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 20px 24px;
+            margin-bottom: 28px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.02);
+            border: 1px solid #e6edf4;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 5px solid #2a6f97;
+            padding-left: 16px;
+            color: #1a4468;
+        }
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        .kpi-card {
+            background: #f9fbfe;
+            border-radius: 24px;
+            padding: 16px;
+            border: 1px solid #eef2f8;
+        }
+        .kpi-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #5d7f9e;
+            letter-spacing: 0.5px;
+        }
+        .kpi-value {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: #1f4e79;
+        }
+        .grid-2col {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        .grid-3col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .info-badge {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px 8px;
+            border-bottom: 1px solid #eef0f4;
+        }
+        th {
+            font-weight: 700;
+            color: #2a557a;
+        }
+        canvas {
+            max-height: 260px;
+            width: 100%;
+        }
+        hr {
+            margin: 16px 0;
+            border-color: #e2e8f0;
+        }
+        .insight-box {
+            background: #eef4fa;
+            border-radius: 24px;
+            padding: 18px;
+            margin-top: 20px;
+        }
+        @media (max-width: 800px) {
+            body { padding: 16px; }
+            .grid-2col, .grid-3col { grid-template-columns: 1fr; }
+            .tabs-nav { border-radius: 28px; justify-content: center; }
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #7f99b5;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <div class="header-title">
+        <h1><i class="fas fa-credit-card"></i> CREDIT CARD ANALYSIS</h1>
+        <p>HITZER BANK | Data-driven intelligence · Demographics · Income · Payment · Executive overview</p>
+    </div>
+
+    <!-- TABS (Home, Demographics, Income Analysis, Payment Insights, Executive View) -->
+    <div class="tabs-nav">
+        <button class="tab-btn" data-tab="tab-home"><i class="fas fa-home"></i> Home</button>
+        <button class="tab-btn active" data-tab="tab-demographics"><i class="fas fa-users"></i> Demographics</button>
+        <button class="tab-btn" data-tab="tab-income"><i class="fas fa-chart-line"></i> Income Analysis</button>
+        <button class="tab-btn" data-tab="tab-payment"><i class="fas fa-credit-card"></i> Payment Insights</button>
+        <button class="tab-btn" data-tab="tab-executive"><i class="fas fa-chart-simple"></i> Executive View</button>
+    </div>
+
+    <!-- ========================= TAB 1: HOME (Overview + Insights & Actions) ========================= -->
+    <div id="tab-home" class="tab-pane">
+        <div class="card">
+            <div class="section-title"><i class="fas fa-chart-pie"></i> Dashboard Overview &amp; KPIs</div>
+            <div class="kpi-row">
+                <div class="kpi-card"><div class="kpi-title">👥 Active Customers</div><div class="kpi-value">4,000</div></div>
+                <div class="kpi-card"><div class="kpi-title">💰 Avg Monthly Income</div><div class="kpi-value">51.66K</div></div>
+                <div class="kpi-card"><div class="kpi-title">💸 Avg Monthly Spend</div><div class="kpi-value">22.12K</div></div>
+                <div class="kpi-card"><div class="kpi-title">📈 Income Utilization</div><div class="kpi-value">42.82%</div></div>
+                <div class="kpi-card"><div class="kpi-title">💳 Credit Card Usage</div><div class="kpi-value">40.74%</div></div>
+                <div class="kpi-card"><div class="kpi-title">🏦 Total Account Spend</div><div class="kpi-value">531M</div></div>
+            </div>
+            <div class="grid-2col">
+                <div>
+                    <h4>📊 Spend by Payment Method</h4>
+                    <canvas id="homeSpendChart" style="height: 0px; display: block; box-sizing: border-box; width: 0px;" width="0" height="0"></canvas>
+                    <div class="info-badge" style="margin-top: 12px;">ATM: 214M | Credit: 171M | Debit: 120M</div>
+                </div>
+                <div>
+                    <h4>🏙️ City Avg Income (Top)</h4>
+                    <canvas id="homeCityIncomeChart" style="height: 0px; display: block; box-sizing: border-box; width: 0px;" width="0" height="0"></canvas>
+                </div>
+            </div>
+            <div class="insight-box">
+                <i class="fas fa-lightbulb" style="color:#f39c12; font-size:1.3rem;"></i> <strong>INSIGHTS &amp; ACTIONS</strong><br>
+                • Bangalore customers have highest income (70.4K) → premium card campaigns.<br>
+                • Credit card usage peaks in summer (May-July), leverage seasonal rewards.<br>
+                • Business owners show higher income utilization (20.9%) → targeted credit line increases.<br>
+                • Strategy: Promote UPI and credit combo for groceries &amp; travel segments to lift total spend.
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================= TAB 2: DEMOGRAPHICS (exactly second image) ========================= -->
+    <div id="tab-demographics" class="tab-pane active-pane">
+        <div class="card">
+            <div class="section-title"><i class="fas fa-venus-mars"></i> DEMOGRAPHICS</div>
+            <div class="grid-2col">
+                <div>
+                    <h4>💰 Total Spend by Payment Method</h4>
+                    <canvas id="demoSpendChart" style="height: 260px; display: block; box-sizing: border-box; width: 722px;" height="520" width="1445"></canvas>
+                    <div class="stats-row" style="margin-top: 12px;">ATM: 214M | Credit Card: 171M | Debit Card: 120M</div>
+                    <hr>
+                    <h4>👫 Average Income by Gender</h4>
+                    <div class="grid-2col" style="gap: 12px;">
+                        <div class="info-badge">Female: <strong>53.7K</strong></div>
+                        <div class="info-badge">Male: <strong>51.6K</strong></div>
+                        <div class="info-badge">Married (share): 90.92% income</div>
+                        <div class="info-badge">Single: 19.08%</div>
+                    </div>
+                    <div style="margin-top: 12px;">📅 Avg Monthly Income by Gender: Female 31.0K | Male 51.6K</div>
+                </div>
+                <div>
+                    <h4>👔 Active Customers by City &amp; Occupation</h4>
+                    <canvas id="occCityChart" style="height: 260px; display: block; box-sizing: border-box; width: 722px;" height="520" width="1445"></canvas>
+                    <div style="font-size:0.8rem; margin-top: 8px;">Salaried Emp:1,254 | Salaried Other:783 | Freelancers:764 | Business Owners:830 | Govt:395</div>
+                    <hr>
+                    <h4>🏙️ Customer Distribution by City</h4>
+                    <canvas id="cityDistributionChart" style="height: 260px; display: block; box-sizing: border-box; width: 722px;" height="520" width="1445"></canvas>
+                    <div>Top cities: Bengaluru, Chennai, Hyderabad, Mumbai</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================= TAB 3: INCOME ANALYSIS (third image) ========================= -->
+    <div id="tab-income" class="tab-pane">
+        <div class="card">
+            <div class="section-title"><i class="fas fa-chart-line"></i> INCOME ANALYSIS</div>
+            <div class="kpi-row">
+                <div class="kpi-card"><div class="kpi-title">Total Account Spend</div><div class="kpi-value">531M</div></div>
+                <div class="kpi-card"><div class="kpi-title">Avg Monthly Income</div><div class="kpi-value">51.66K</div></div>
+                <div class="kpi-card"><div class="kpi-title">Avg Monthly Spend</div><div class="kpi-value">22.12K</div></div>
+                <div class="kpi-card"><div class="kpi-title">Avg Income Utilization</div><div class="kpi-value">42.82%</div></div>
+            </div>
+            <div class="grid-2col">
+                <div>
+                    <h4>🏙️ City-wise Avg Monthly Income</h4>
+                    <canvas id="incomeCityChart" style="height: 0px; display: block; box-sizing: border-box; width: 0px;" height="0" width="0"></canvas>
+                    <div class="info-badge"><strong>Business Owners:</strong> Bengaluru 75.23K, Chennai 69.74K, Hyderabad 59.24K, Mumbai 49.95K</div>
+                    <div class="info-badge"><strong>Professionals:</strong> Bengaluru 35.13K, Chennai 29.62K, Hyderabad 25.32K, Mumbai 24.44K</div>
+                </div>
+                <div>
+                    <h4>📆 Income Utilization % by Month</h4>
+                    <canvas id="utilMonthChart" style="height: 0px; display: block; box-sizing: border-box; width: 0px;" height="0" width="0"></canvas>
+                    <table style="margin-top: 8px;">
+                        <tbody><tr><th>Month</th><th>Salary%</th><th>Bonus%</th><th>Other%</th></tr>
+                        <tr><td>July</td><td>18.79%</td><td>10.92%</td><td>9.57%</td></tr>
+                        <tr><td>August</td><td>16.11%</td><td>8.85%</td><td>6.47%</td></tr>
+                        <tr><td>September</td><td>15.31%</td><td>7.71%</td><td>5.77%</td></tr>
+                    </tbody></table>
+                </div>
+            </div>
+            <div class="grid-2col">
+                <div><h4>💼 Occupation Utilization</h4><canvas id="occUtilIncomeChart" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas><div>Accountants 14.17% | Financial Officers 15.31% | Business Owners 20.93%</div></div>
+                <div><h4>📊 Job-Wise Income Utilization</h4><div class="info-badge">General Accounting:25% | Revenue Acct:23.5%<br>Sales/Order Acct:13.5% | Business Owner:41.1%</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================= TAB 4: PAYMENT INSIGHTS (fourth image) ========================= -->
+    <div id="tab-payment" class="tab-pane">
+        <div class="card">
+            <div class="section-title"><i class="fas fa-chart-line"></i> PAYMENT INSIGHTS</div>
+            <div class="kpi-row">
+                <div class="kpi-card"><div class="kpi-title">Avg Monthly Income</div><div class="kpi-value">51.66K</div></div>
+                <div class="kpi-card"><div class="kpi-title">Avg Monthly Spend</div><div class="kpi-value">22.12K</div></div>
+                <div class="kpi-card"><div class="kpi-title">Income Utilization</div><div class="kpi-value">42.82%</div></div>
+                <div class="kpi-card"><div class="kpi-title">Credit Card Usage%</div><div class="kpi-value">40.74%</div></div>
+            </div>
+            <div class="grid-2col">
+                <div><h4>📉 Monthly Spending by Payment Method (Credit Card)</h4><canvas id="monthlyCCLine" style="height: 0px; display: block; box-sizing: border-box; width: 0px;" height="0" width="0"></canvas><div>May 19.7K | Jun 20.3K | Jul 20.2K | Aug 17.3K | Sep 13.5K | Oct 11.3K | Nov 10.6K | Dec 9.1K</div></div>
+                <div><h4>📍 City-Wise Credit Card Usage</h4><canvas id="cityCreditBar" style="height: 0px; display: block; box-sizing: border-box; width: 0px;" height="0" width="0"></canvas><div>Delhi NCR:17.3K | Hyderabad:13.5K | Mumbai:11.3K | Bengaluru:10.6K</div></div>
+            </div>
+            <div class="grid-2col">
+                <div><h4>👥 Payment Type by Age (Credit Card spend)</h4><canvas id="ageCreditChart" style="height: 0px; display: block; box-sizing: border-box; width: 0px;" height="0" width="0"></canvas><div>&lt;18:0.4K | 18-24:0.8K | 25-34:1.2K | 35-44:1.8K | 45-54:2.6K | 55+:3.6K</div></div>
+                <div><h4>📦 Category-wise Payment Utilization (Top)</h4>
+                    <div class="info-badge">📘 Books: Credit 46.38M | Debit 23.94M | UPI 22.48M</div>
+                    <div class="info-badge">🍏 Groceries: Credit 27.74M | Debit 16.54M | UPI 20.96M</div>
+                    <div class="info-badge">✈️ Travel: Credit 26.04M | Debit 11.04M | NetBanking 3.34M</div>
+                    <div class="info-badge">❤️ Health &amp; Wellness: Credit 27.74M | Debit 16.54M | Total 65.04M</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================= TAB 5: EXECUTIVE VIEW (last image with full table) ========================= -->
+    <div id="tab-executive" class="tab-pane">
+        <div class="card">
+            <div class="section-title"><i class="fas fa-chalkboard-user"></i> EXECUTIVE VIEW</div>
+            <div class="kpi-row">
+                <div class="kpi-card"><div class="kpi-title">Active Customers</div><div class="kpi-value">4000</div></div>
+                <div class="kpi-card"><div class="kpi-title">Avg Monthly Income</div><div class="kpi-value">51.66K</div></div>
+                <div class="kpi-card"><div class="kpi-title">Avg Monthly Spend</div><div class="kpi-value">22.12K</div></div>
+                <div class="kpi-card"><div class="kpi-title">Avg Income Utilization</div><div class="kpi-value">42.82%</div></div>
+                <div class="kpi-card"><div class="kpi-title">Max Income Unbalance</div><div class="kpi-value">44.39%</div></div>
+            </div>
+            <div class="grid-2col">
+                <div>
+                    <h4>💼 Occupation Utilization %</h4>
+                    <canvas id="execOccUtilChart" style="height: 0px; display: block; box-sizing: border-box; width: 0px;" height="0" width="0"></canvas>
+                    <div>Accountants 14.17% | Financial Officers 15.31% | Business Owners 20.93%</div>
+                </div>
+                <div>
+                    <h4>📈 Avg Monthly Spend &amp; Utilization by Occupation</h4>
+                    <div class="info-badge">Accountant (3.33%) | Financial Officer (2.27%) | Business Owner (1.00%)</div>
+                    <div class="info-badge">Job-wise: General Accounting 25.0% | Business Owner 41.1%</div>
+                </div>
+            </div>
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <h4>📋 Total Spend by Categories (All Payment Methods)</h4>
+                <table>
+                    <thead><tr><th>Category</th><th>Credit Card</th><th>Debit Card</th><th>Net Banking</th><th>UPI</th><th>Total</th></tr></thead>
+                    <tbody>
+                        <tr><td>Apparel</td><td>14.04M</td><td>8.34M</td><td>3.54M</td><td>0.24M</td><td>34.04M</td></tr>
+                        <tr><td>Books</td><td>46.38M</td><td>23.94M</td><td>10.08M</td><td>22.48M</td><td>104.94M</td></tr>
+                        <tr><td>Electronics</td><td>15.29M</td><td>7.35M</td><td>7.35M</td><td>21.74M</td><td>49.98M</td></tr>
+                        <tr><td>Food</td><td>15.44M</td><td>8.34M</td><td>4.04M</td><td>15.04M</td><td>43.84M</td></tr>
+                        <tr><td>Groceries</td><td>27.74M</td><td>16.54M</td><td>9.18M</td><td>20.96M</td><td>64.56M</td></tr>
+                        <tr><td>Health &amp; Wellness</td><td>27.74M</td><td>16.54M</td><td>7.24M</td><td>14.34M</td><td>65.04M</td></tr>
+                        <tr><td>Others</td><td>6.68M</td><td>3.34M</td><td>1.73M</td><td>4.24M</td><td>16.06M</td></tr>
+                        <tr><td>Travel</td><td>26.04M</td><td>11.04M</td><td>3.34M</td><td>15.74M</td><td>59.28M</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="insight-box" style="margin-top: 16px;">
+                <i class="fas fa-chart-simple"></i> <strong>Strategic Action</strong>: Books &amp; Travel reflect high Credit Card usage → loyalty programs. UPI penetration strong in groceries, consider cashback.
+            </div>
+        </div>
+    </div>
+    <div class="footer-note">
+        <i class="fab fa-microsoft"></i> Microsoft Power BI styled | Data accurate to Hitzer Bank reports
+    </div>
+</div>
+
+<script>
+    // Helper to render charts after tab shown (but we can init all on load in hidden containers safely)
+    // We'll create charts with specific ids, ensure no duplication.
+    let charts = {};
+
+    function initAllCharts() {
+        // Home Tab
+        charts.homeSpend = new Chart(document.getElementById('homeSpendChart'), { type: 'bar', data: { labels: ['ATM','Credit','Debit'], datasets: [{ label: 'Spend (M)', data: [214,171,120], backgroundColor: ['#2c6e9e','#27ae60','#e67e22'] }] }, options: { responsive: true, maintainAspectRatio: true } });
+        charts.homeCityIncome = new Chart(document.getElementById('homeCityIncomeChart'), { type: 'bar', data: { labels: ['Bengaluru','Chennai','Hyderabad','Mumbai'], datasets: [{ label: 'Avg Income (K)', data: [70.43,59.74,50.21,49.95], backgroundColor: '#2980b9' }] } });
+        
+        // Demographics
+        charts.demoSpend = new Chart(document.getElementById('demoSpendChart'), { type: 'bar', data: { labels: ['ATM','Credit','Debit'], datasets: [{ label: 'Million', data: [214,171,120], backgroundColor: '#3b82f6' }] } });
+        charts.occCity = new Chart(document.getElementById('occCityChart'), { type: 'bar', data: { labels: ['Salaried','Salaried Other','Freelancers','Business','Govt'], datasets: [{ label: 'Customers', data: [1254,783,764,830,395], backgroundColor: '#4682b4' }] } });
+        charts.cityDist = new Chart(document.getElementById('cityDistributionChart'), { type: 'pie', data: { labels: ['Bengaluru','Chennai','Hyderabad','Mumbai','Others'], datasets: [{ data: [34,28,20,18,0], backgroundColor: ['#1f6d8c','#2a9d8f','#e9c46a','#f4a261','#cdddee'] }] }, options: { plugins: { legend: { position: 'bottom' } } } });
+        
+        // Income Analysis
+        charts.incomeCity = new Chart(document.getElementById('incomeCityChart'), { type: 'bar', data: { labels: ['Bengaluru','Chennai','Hyderabad','Mumbai'], datasets: [{ label: 'Avg Monthly Income (K)', data: [70.43,59.74,50.21,49.95], backgroundColor: '#1e6f5c' }] } });
+        charts.utilMonth = new Chart(document.getElementById('utilMonthChart'), { type: 'line', data: { labels: ['July','Aug','Sep'], datasets: [{ label: 'Income Utilization %', data: [32.56,41.67,30], borderColor: '#d9534f', tension: 0.2, fill: false }] } });
+        charts.occUtilIncome = new Chart(document.getElementById('occUtilIncomeChart'), { type: 'bar', data: { labels: ['Accountants','Financial Officers','Business Owners'], datasets: [{ label: 'Utilization %', data: [14.17,15.31,20.93], backgroundColor: '#f39c12' }] } });
+        
+        // Payment Insights
+        charts.monthlyCC = new Chart(document.getElementById('monthlyCCLine'), { type: 'line', data: { labels: ['May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], datasets: [{ label: 'Credit Card Spend (K)', data: [19.7,20.3,20.2,17.3,13.5,11.3,10.6,9.1], borderColor: '#2a9d8f', fill: false }] } });
+        charts.cityCredit = new Chart(document.getElementById('cityCreditBar'), { type: 'bar', data: { labels: ['Delhi NCR','Hyderabad','Mumbai','Bengaluru'], datasets: [{ label: 'Avg CC Spend (K)', data: [17.3,13.5,11.3,10.6], backgroundColor: '#e9c46a' }] } });
+        charts.ageCredit = new Chart(document.getElementById('ageCreditChart'), { type: 'bar', data: { labels: ['<18','18-24','25-34','35-44','45-54','55+'], datasets: [{ label: 'Credit Card Spend (K)', data: [0.4,0.8,1.2,1.8,2.6,3.6], backgroundColor: '#7f8c8d' }] } });
+        
+        // Executive View chart
+        charts.execOcc = new Chart(document.getElementById('execOccUtilChart'), { type: 'bar', data: { labels: ['Accountants','Financial Officers','Business Owners'], datasets: [{ label: 'Income Utilization %', data: [14.17,15.31,20.93], backgroundColor: '#3498db' }] } });
+    }
+
+    // Tab switching logic
+    function switchTab(tabId) {
+        // hide all panes
+        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active-pane'));
+        document.getElementById(tabId).classList.add('active-pane');
+        // update active button
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+        
+        // optional reflow for charts (avoid any rendering glitch)
+        setTimeout(() => {
+            // redraw charts if needed (Chart.js auto-resize)
+            Object.values(charts).forEach(chart => { if(chart && chart.resize) chart.resize(); });
+        }, 100);
+    }
+
+    // Attach event listeners
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const tabId = btn.getAttribute('data-tab');
+            switchTab(tabId);
+        });
+    });
+
+    // Initialize all charts
+    initAllCharts();
+
+    // Extra data fixes: some fields like "city-wise income by occupation" details appear via text already.
+    // Also integrate missing items like "Active Customers by City" (bar) & "Avg Monthly Income & Spent by Gender" 
+    // already presented.
+</script>
+
+</body></html>
